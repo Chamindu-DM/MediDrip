@@ -1,0 +1,26 @@
+// Prisma schema for MediDrip backend
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FluidLog {
+  id        String   @id @default(cuid())
+  userId    String
+  type      LogType
+  amount    Int      // in ml
+  timestamp DateTime @default(now())
+
+  @@index([userId, timestamp])
+  @@map("fluid_logs")
+}
+
+enum LogType {
+  INTAKE
+  OUTPUT
+}
